@@ -354,6 +354,24 @@ public class MainActivity extends AppCompatActivity {
     String alertTitle;
     int correct = 0, incorrect = 0;
 
+    private void playSound(MediaPlayer mp, boolean isCorrect) {
+        try {
+            if(mp.isPlaying()) {
+                mp.stop();
+                mp.release();
+                if(isCorrect) {
+                    mp = MediaPlayer.create(context, R.raw.welldone);
+                } else {
+                    mp = MediaPlayer.create(context, R.raw.tryagain);
+                }
+                mp.start();
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void checkAnswer(boolean userPressedTrue)
     {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
@@ -371,22 +389,23 @@ public class MainActivity extends AppCompatActivity {
             {
                 messageResId = R.string.correct_toast;
                 alertTitle = "Correct!";
-                mCurrentScore += 1;
-                correct += 1;
+                mCurrentScore ++;
+                correct ++;
                 // Play sound from mp3
-                try
-                {
-                    if(mp1.isPlaying())
-                    {
-                        mp1.stop();
-                        mp1.release();
-                        mp1 = MediaPlayer.create(context, R.raw.welldone);
-                    }   mp1.start();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                playSound(mp1, true);
+                // try
+                // {
+                //     if(mp1.isPlaying())
+                //     {
+                //         mp1.stop();
+                //         mp1.release();
+                //         mp1 = MediaPlayer.create(context, R.raw.welldone);
+                //     }   mp1.start();
+                // }
+                // catch(Exception e)
+                // {
+                //     e.printStackTrace();
+                // }
                 Log.d(TAG, mCurrentScore + "");
                 showScore();
             }
@@ -394,20 +413,21 @@ public class MainActivity extends AppCompatActivity {
             {
                 messageResId = R.string.incorrect_toast;
                 alertTitle = "Wrong...";
-                incorrect += 1;
-                try
-                {
-                    if(mp2.isPlaying())
-                    {
-                        mp2.stop();
-                        mp2.release();
-                        mp2 = MediaPlayer.create(context, R.raw.tryagain);
-                    }   mp2.start();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                incorrect ++;
+                playSound(mp2, false);
+                // try
+                // {
+                //     if(mp2.isPlaying())
+                //     {
+                //         mp2.stop();
+                //         mp2.release();
+                //         mp2 = MediaPlayer.create(context, R.raw.tryagain);
+                //     }   mp2.start();
+                // }
+                // catch(Exception e)
+                // {
+                //     e.printStackTrace();
+                // }
             }
 
             // Create dialog
